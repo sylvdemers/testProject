@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  app:
+    build: .
+    ports:
+      - '8080:80'
+    environment:
+      - ConnectionStrings__DefaultConnection=server=mysql;port=3306;database=HockeyPoolDb;user=root;password=MySqlPassword!
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: MySqlPassword!
+      MYSQL_DATABASE: HockeyPoolDb
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
